@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎭 Persona Pattern Interactive Quiz & Exercise</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .progress-bar {
+            background: #f0f0f0;
+            height: 8px;
+            border-radius: 4px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question-card {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8f4fd 100%);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(79, 172, 254, 0.2);
+        }
+
+        .question-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .question-number {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-right: 20px;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .question-title {
+            flex: 1;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .scenario-box {
+            background: linear-gradient(135deg, #fff5ee 0%, #ffeaa7 100%);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 4px solid #e17055;
+            position: relative;
+        }
+
+        .scenario-box::before {
+            content: '📖';
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.2rem;
+        }
+
+        .scenario-box h4 {
+            color: #d63031;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .persona-examples {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .persona-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .persona-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+            border-color: #4facfe;
+        }
+
+        .persona-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            font-weight: bold;
+        }
+
+        .friend-a { background: linear-gradient(135deg, #74b9ff, #0984e3); }
+        .friend-b { background: linear-gradient(135deg, #fd79a8, #e84393); }
+        .friend-c { background: linear-gradient(135deg, #fdcb6e, #e17055); }
+        .professional { background: linear-gradient(135deg, #636e72, #2d3436); }
+        .personal { background: linear-gradient(135deg, #fd79a8, #e84393); }
+        .peer { background: linear-gradient(135deg, #00cec9, #55a3ff); }
+
+        .persona-name {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .persona-desc {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .persona-quote {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 12px;
+            font-style: italic;
+            font-size: 0.9rem;
+            border-left: 3px solid #4facfe;
+            line-height: 1.4;
+        }
+
+        .options {
+            list-style: none;
+            margin: 20px 0;
+        }
+
+        .option-item {
+            margin: 12px 0;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 15px 18px;
+            background: white;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid #e9ecef;
+            position: relative;
+        }
+
+        .option-label:hover {
+            background: linear-gradient(135deg, #e8f4fd 0%, #f8f9ff 100%);
+            border-color: #4facfe;
+            transform: translateX(3px);
+        }
+
+        .option-label.selected {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border-color: #4facfe;
+            transform: translateX(5px);
+        }
+
+        .option-input {
+            margin-right: 12px;
+            transform: scale(1.2);
+            accent-color: #4facfe;
+        }
+
+        .option-text {
+            flex: 1;
+            font-weight: 500;
+        }
+
+        .feedback {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 12px;
+            animation: slideDown 0.5s ease-out;
+            border: 2px solid;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .feedback-correct {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            border-color: #28a745;
+            color: #155724;
+        }
+
+        .feedback-incorrect {
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+            border-color: #dc3545;
+            color: #721c24;
+        }
+
+        .feedback-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .feedback-insight {
+            line-height: 1.6;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px 5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn:disabled:hover::before {
+            left: -100%;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #00cec9 0%, #55a3ff 100%);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #fd79a8 0%, #e84393 100%);
+        }
+
+        .results-panel {
+            display: none;
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            border: 2px solid #28a745;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            text-align: center;
+            animation: zoomIn 0.5s ease-out;
+        }
+
+        @keyframes zoomIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .score-display {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #155724;
+        }
+
+        .exercise-section {
+            display: none;
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        .exercise-title {
+            color: #d73527;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .text-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 1rem;
+            margin: 10px 0;
+            min-height: 100px;
+            resize: vertical;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .text-input:focus {
+            outline: none;
+            border-color: #4facfe;
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+        }
+
+        .char-count {
+            text-align: right;
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #e9ecef;
+        }
+
+        .question-status {
+            font-weight: 600;
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .insight-box {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 12px 0;
+            border-left: 4px solid;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .insight-correct {
+            border-left-color: #28a745;
+            background: rgba(212, 237, 218, 0.3);
+        }
+
+        .insight-incorrect {
+            border-left-color: #dc3545;
+            background: rgba(248, 215, 218, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+            }
+            .header h1 {
+                font-size: 2rem;
+            }
+            .persona-examples {
+                grid-template-columns: 1fr;
+            }
+            .navigation {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .question-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            .question-number {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎭 Persona Pattern Mastery</h1>
+            <p>Interactive Learning Experience with Real-World Applications</p>
+        </div>
+
+        <div class="content">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <!-- Question 1: Friendship Test -->
+            <div class="section question-section" id="question1">
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number">1</div>
+                        <div class="question-title">The Friendship Test: Different Advice Styles</div>
+                    </div>
+
+                    <div class="scenario-box">
+                        <h4>🎓 College Major Crisis</h4>
+                        <p>You're feeling overwhelmed about choosing a college major. Three friends give you completely different advice approaches:</p>
+                    </div>
+
+                    <div class="persona-examples">
+                        <div class="persona-card">
+                            <div class="persona-avatar friend-a">📊</div>
+                            <div class="persona-name">Friend A: "The Analyst"</div>
+                            <div class="persona-desc">Data-driven, research-focused approach</div>
+                            <div class="persona-quote">
+                                "Look, you need to research job market trends, salary projections, and industry growth rates. Make a spreadsheet comparing career paths."
+                            </div>
+                        </div>
+
+                        <div class="persona-card">
+                            <div class="persona-avatar friend-b">💕</div>
+                            <div class="persona-name">Friend B: "The Supporter"</div>
+                            <div class="persona-desc">Emotional, experience-based approach</div>
+                            <div class="persona-quote">
+                                "Dude, I totally get that stress! I changed my major three times. What subjects actually make you excited to learn?"
+                            </div>
+                        </div>
+
+                        <div class="persona-card">
+                            <div class="persona-avatar friend-c">🌟</div>
+                            <div class="persona-name">Friend C: "The Mystic"</div>
+                            <div class="persona-desc">Intuitive, spiritual approach</div>
+                            <div class="persona-quote">
+                                "Have you considered what the universe is trying to tell you? Maybe meditate on what your soul really wants to do."
+                            </div>
+                        </div>
+                    </div>
+
+                    <h4>Which friend's approach would work best for someone who makes decisions based on facts and research?</h4>
+
+                    <ul class="options">
+                        <li class="option-item">
+                            <label class="option-label" onclick="selectAnswer(1, 'a', true)">
+                                <input type="radio" name="q1" value="a" class="option-input">
+                                <span class="option-text">A) Friend A - data and analysis approach</span>
+                            </label>
+                        </li>
+                        <li class="option-item">
+                            <label class="option-label" onclick="selectAnswer(1, 'b', false)">
+                                <input type="radio" name="q1" value="b" class="option-input">
+                                <span class="option-text">B) Friend B - emotional validation approach</span>
+                            </label>
+                        </li>
+                        <li class="option-item">
+                            <label class="option-label" onclick="selectAnswer(1, 'c', false)">
+                                <input type="radio" name="q1" value="c" class="option-input">
+                                <span class="option-text">C) Friend C - intuitive/spiritual approach</span>
+                            </label>
+                        </li>
+                        <li class="option-item">
+                            <label class="option-label" onclick="selectAnswer(1, 'd', false)">
+                                <input type="radio" name="q1" value="d" class="option-input">
+                                <span class="option-text">D) All approaches work equally well</span>
+                            </label>
+                        </li>
+                    </ul>
+
+                    <div id="feedback1"></div>
+                </div>
+            </div>
+
+            <!-- Question 2: Customer Service -->
+            <div class="section question-section hidden" id="question2">
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number">2</div>
+                        <div class="question-title">Customer Service Persona Styles</div>
+                    </div>
+
+                    <div class="scenario-box">
+                        <h4>📦 Missing Birthday Gift Crisis</h4>
+                        <p>Your package was supposed to arrive yesterday for your mom's birthday, but it's lost somewhere. You call customer service and get one of these responses:</p>
+                    </div>
+
+                    <div class="persona-examples">
+                        <div class="persona-card">
+                            <div class="persona-avatar professional">🏢</div>
+                            <div class="persona-name">Response A: "The Professional"</div>
+                            <div class="persona-desc">Efficient, process-focused</div>
+                            <div class="persona-quote">
+                                "I apologize for the inconvenience. Let me review your tracking data and escalate this to our logistics team immediately."
+                            </div>
+                        </div>
+
+                        <div class="persona-card">
+                            <div class="persona-avatar personal">💝</div>
+                            <div class="persona-name">Response B: "The Personal Touch"</div>
+                            <div class="persona-desc">Empathetic, relationship-focused</div>
+                            <div class="persona-quote">
+                                "Oh no! Missing your mom's birthday gift - that's so stressful! I'm a mom too, so I totally get it. Let me personally make sure we fix this today."
+                            </div>
+                        </div>
+                    </div>
+
+                    <h4>Both solve your problem equally well. What's the main difference between these responses?</h4>
+
+                    <ul class="options">
+                        <li class="option-item">
+                            <label class="option-label" onclick="selectAnswer(2, 'a', false)">
+                                <input type="radio" name="q2" value="a" class="option-input">
+                                <span class="option-text">A) Response A is more professional, Response B is more personal</span>
+                            </label>
+                        </li>
+                        <li class="option-item">
+                            <label class="option-label" onclick="selectAnswer(2, 'b', false)">
+                                <input type="radio" name="q2" value="b" class="option-input">
+                                <span class="option-text">B) Response A focuses on process, Response B focuses on emotions</span>
+                            </label>
+                        </li>
+                        <li class="option-item">
+                            <label class="option-label" onclick="selectAnswer(2, 'c', false)">
+                                <input type="radio" name="q2" value="c" class="option-input">
+                                <span class="option-text">C) Response A shows competence, Response B shows empathy</span>
+                            </label>
+                        </li>
+                        <li class="option-item">
+                            <label class="option-label" onclick="selectAnswer(2, 'd', true)">
+                                <input type="radio" name="q2" value="d" class="option-input">
+                                <span class="option-text">D) All of the above</span>
+                            </label>
+                        </li>
+                    </ul>
+
+                    <div id="feedback2"></div>
+                </div>
+            </div>
+
+            <!-- Question 3: Robotic Failure -->
+            <div class="section question-section hidden" id="question3">
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number">3</div>
+                        <div class="question-title">When AI Personas Go Wrong</div>
+                    </div>
+
+                    <div class="scenario-box">
+                        <h4>🤖 Robotic Study Helper Failure</h4>
+                        <p>Your AI study helper gave you this response to "I don't understand chemistry":</p>
+                        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 4px solid #dc3545;">
+                            <em>"Chemistry comprehension deficiency detected. Initiating knowledge transfer protocol. Please specify which molecular concepts require clarification."</em>
+                        </div>
+                    </div>
+
+                    <h4>What's the main problem with this robotic response?</h4>
+
+                    <ul class="options">
+                        <li class="option-item">
+                            <label class="option-label" onclick="selectAnswer(3, 'a', false)">
+                                <input type="radio" name="q3" value="a" class="option-input">
+                                <span class="option-text">A) It's too technical and uses jargon</span>
+                            </label>
+                        </li>
+                        <li class="option-item">
+                            <label class="option-label" onclick="selectAnswer(3, 'b', false)">
+                                <input type="radio" name="q3" value="b" class="option-input">
+                                <span class="option-text">B) It sounds robotic instead of human-friendly</span>
+                            </label>
+                        </li>
+                        <li class="option-item">
+                            <label class="option-label" onclick="selectAnswer(3, 'c', false)">
+                                <input type="radio" name="q3" value="c" class="option-input">
+                                <span class="option-text">C) It doesn't acknowledge the student's frustration</span>
+                            </label>
+                        </li>
+                        <li class="option-item">
+                            <label class="option-label" onclick="selectAnswer(3, 'd', true)">
+                                <input type="radio" name="q3" value="d" class="option-input">
+                                <span class="option-text">D) All of the above</span>
+                            </label>
+                        </li>
+                    </ul>
+
+                    <div id="feedback3"></div>
+                </div>
+            </div>
+
+            <!-- Question 4: Persona Detective -->
+            <div class="section question-section hidden" id="question4">
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number">4</div>
+                        <div class="question-title">Persona Detective Challenge</div>
+                    </div>
+
+                    <div class="scenario-box">
+                        <h4>🕵️ Mystery Message Analysis</h4>
+                        <p>Read this message and identify what type of persona this represents:</p>
+                        <div style="background: #e3f2fd; padding: 20px; border-radius: 10px; margin: 15px 0; border-left: 4px solid #2196f3;">
+                            <em>"Hey there! I know job interviews can feel super scary, but here's the thing - I bombed my first five interviews before I figured out what actually works. Want me to share what I learned?"</em>
+                        </div>
+                    </div>
+
+                    <h4>This sounds most like:</h4>
+
+                    <ul class="options">
+                        <li class="option-item">
+                            <label class="option-label" onclick="selectAnswer(4, 'a', false)">
+                                <input type="radio" name="q4" value="a" class="option-input">
+                                <span class="option-text">A) Professional career counselor</span>
+                            </label>
+                        </li>
+                        <li class="option-item">
+                            <label class="option-label" onclick="selectAnswer(4, 'b', true)">
+                                <input type="radio" name="q4" value="b" class="option-input">
+                                <span class="option-text">B) Peer mentor who's been through the same struggle</span>
+                            </label>
+                        </li>
+                        <li class="option-item">
+                            <label class="option-label" onclick="selectAnswer(4, 'c', false)">
+                                <input type="radio" name="q4" value="c" class="option-input">
+                                <span class="option-text">C) Hiring manager giving insider tips</span>
+                            </label>
+                        </li>
+                        <li class="option-item">
+                            <label class="option-label" onclick="selectAnswer(4, 'd', false)">
+                                <input type="radio" name="q4" value="d" class="option-input">
+                                <span class="option-text">D) Academic professor teaching interview skills</span>
+                            </label>
+                        </li>
+                    </ul>
+
+                    <div id="feedback4"></div>
+                </div>
+            </div>
+
+            <!-- Question 5: Crisis Effectiveness -->
+            <div class="section question-section hidden" id="question5">
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number">5</div>
+                        <div class="question-title">Persona Effectiveness in Crisis</div>
+                    </div>
+
+                    <div class="scenario-box">
+                        <h4>😰 Student Panic Attack Scenario</h4>
+                        <p>A student is having a panic attack about failing chemistry and needs immediate help. They're convinced they're "too stupid for science" and want to quit.</p>
+                    </div>
+
+                    <h4>Which persona would be MOST effective in this emotional crisis?</h4>
+
+                    <ul class="options">
+                        <li class="option-item">
+                            <label class="option-label" onclick="selectAnswer(5, 'a', false)">
+                                <input type="radio" name="q5" value="a" class="option-input">
+                                <span class="option-text">A) Dr. Johnson, strict chemistry professor with 20 years of experience</span>
+                            </label>
+                        </li>
+                        <li class="option-item">
+                            <label class="option-label" onclick="selectAnswer(5, 'b', false)">
+                                <input type="radio" name="q5" value="b" class="option-input">
+                                <span class="option-text">B) ChemBot, AI with access to all chemistry knowledge</span>
+                            </label>
+                        </li>
+                        <li class="option-item">
+                            <label class="option-label" onclick="selectAnswer(5, 'c', true)">
+                                <input type="radio" name="q5" value="c" class="option-input">
+                                <span class="option-text">C) Maya, peer tutor who overcame chemistry anxiety herself</span>
+                            </label>
+                        </li>
+                        <li class="option-item">
+                            <label class="option-label" onclick="selectAnswer(5, 'd', false)">
+                                <input type="radio" name="q5" value="d" class="option-input">
+                                <span class="option-text">D) Professor Smith, Nobel Prize-winning chemist</span>
+                            </label>
+                        </li>
+                    </ul>
+
+                    <div id="feedback5"></div>
+                </div>
+            </div>
+
+            <!-- Results Panel -->
+            <div class="results-panel" id="resultsPanel">
+                <div style="font-size: 3rem; margin-bottom: 20px;">🎉</div>
+                <div class="score-display" id="scoreDisplay"></div>
+                <div id="finalInsights" style="text-align: left; margin-top: 20px;"></div>
+            </div>
+
+            <!-- Exercise Section -->
+            <div class="exercise-section" id="exerciseSection">
+                <div class="exercise-title">🛠️ Hands-On Exercise: Family Dinner Drama</div>
+                
+                <div class="scenario-box">
+                    <h4>🦃 The Thanksgiving Crisis</h4>
+                    <p>Your family group chat is exploding because Thanksgiving plans are falling apart. Grandma wants traditional dinner at her house, your parents want to try a restaurant, your siblings want to skip it entirely, and everyone's getting heated. You need to design TWO different "family mediator" personalities to help calm this situation.</p>
+                    
+                    <div class="image-placeholder" style="height: 150px; font-size: 1.8rem; background: linear-gradient(135deg, #fff3e0 0%, #ffcc02 100%);">
+                        👵 🍽️ VS 👨‍👩‍👧‍👦 🍕 VS 👫 ❌
+                    </div>
+                </div>
+
+                <div style="margin: 25px 0;">
+                    <h4>👥 Personality 1: The Peacekeeper</h4>
+                    <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                        <div style="width: 40px; height: 40px; background: url('https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=80&h=80&fit=crop&crop=face') center/cover; border-radius: 50%; margin-right: 10px; border: 2px solid #fd79a8;"></div>
+                        <p style="color: #666; margin: 0;">Design someone who focuses on making everyone feel heard and validated.</p>
+                    </div>
+                    <textarea class="text-input" id="peacekeeper" placeholder="Example: 'You are Aunt Sarah, the family diplomat who has helped resolve conflicts for 15 years. You speak with warm authority and always validate everyone's feelings before suggesting solutions. You use phrases like 'I can see this really matters to you' and 'What I'm hearing is...' You believe family harmony is more important than being right.'"></textarea>
+                    <div class="char-count" id="peacekeeperCount">0/500 characters</div>
+
+                    <h4>🎯 Personality 2: The Problem-Solver</h4>
+                    <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                        <div style="width: 40px; height: 40px; background: url('https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&h=80&fit=crop&crop=face') center/cover; border-radius: 50%; margin-right: 10px; border: 2px solid #74b9ff;"></div>
+                        <p style="color: #666; margin: 0;">Design someone who focuses on quick, practical solutions.</p>
+                    </div>
+                    <textarea class="text-input" id="problemSolver" placeholder="Example: 'You are Uncle Mike, the family project manager who believes in action over endless discussion. You speak directly and focus on logistics. You use phrases like 'Here are our options' and 'Let's make a decision.' You create structured solutions and timelines because you know that clear plans reduce family stress.'"></textarea>
+                    <div class="char-count" id="solverCount">0/500 characters</div>
+
+                    <h4>🤔 Your Family Strategy</h4>
+                    <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                        <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%); border-radius: 50%; margin-right: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">🧠</div>
+                        <p style="color: #666; margin: 0;">For YOUR family specifically, which approach would you use first and why?</p>
+                    </div>
+                    <textarea class="text-input" id="strategy" placeholder="Think about your actual family dynamics. Which persona would work better first? Could you combine both approaches? How would you sequence their communications? Example: 'For my family, I would use the Peacekeeper first because my grandma gets her feelings hurt easily, then switch to Problem-Solver once everyone feels heard.'"></textarea>
+                    <div class="char-count" id="strategyCount">0/500 characters</div>
+                </div>
+
+                <div style="text-align: center; margin-top: 30px;">
+                    <button class="btn btn-success" onclick="saveExercise()">💾 Save My Family Strategy</button>
+                    <button class="btn btn-danger" onclick="clearExercise()">🗑️ Start Over</button>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <div class="navigation">
+                <button class="btn btn-secondary hidden" id="prevBtn" onclick="previousQuestion()">← Previous</button>
+                <div class="question-status" id="questionStatus">Question 1 of 5</div>
+                <button class="btn" id="nextBtn" onclick="nextQuestion()" disabled>Next →</button>
+                <button class="btn btn-success hidden" id="showResultsBtn" onclick="showResults()">🎯 Show Results</button>
+                <button class="btn hidden" id="startExerciseBtn" onclick="startExercise()">🛠️ Start Exercise</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentQuestion = 1;
+        let answers = {};
+        let score = 0;
+        const totalQuestions = 5;
+
+        const insights = {
+            1: "Different people need different persona approaches based on their decision-making style. Analytical people respond to data-driven personas, while emotional people need empathetic personas. The most effective AI personas match the user's natural thinking patterns.",
+            2: "Personas succeed by matching different customer emotional needs - some want professional competence, others need personal connection. The same solution can be delivered through completely different emotional approaches, and both can be equally effective depending on what the customer needs to feel supported.",
+            3: "Failed personas prioritize information delivery over emotional connection. Humans need to feel understood and supported before they can effectively learn or receive help. The best personas balance competence with genuine human warmth and accessibility.",
+            4: "Persona identity is revealed through language style, personal vulnerability, and relationship dynamics. Peer personas build trust through shared struggle and casual language, while authority personas use professional language and expertise. Users respond differently to peer vs. authority personas depending on their emotional state.",
+            5: "When users are in emotional crisis, they need personas that prioritize emotional support over expertise. Peer personas reduce shame and create immediate trust because they normalize struggle through shared experience. Authority can actually increase anxiety when someone is already overwhelmed."
+        };
+
+        function selectAnswer(questionNum, answer, isCorrect) {
+            // Prevent multiple selections for the same question
+            if (answers[questionNum]) return;
+            
+            // Store the answer
+            answers[questionNum] = { answer, isCorrect };
+            if (isCorrect) score++;
+
+            // Update UI - mark selected option
+            const questionDiv = document.getElementById(`question${questionNum}`);
+            const labels = questionDiv.querySelectorAll('.option-label');
+            labels.forEach(label => {
+                label.classList.remove('selected');
+                label.onclick = null; // Disable further clicking
+            });
+            event.currentTarget.classList.add('selected');
+
+            // Show feedback immediately
+            showFeedback(questionNum, isCorrect);
+            
+            // Enable navigation
+            updateNavigationButtons();
+        }
+
+        function showFeedback(questionNum, isCorrect) {
+            const feedbackDiv = document.getElementById(`feedback${questionNum}`);
+            const insight = insights[questionNum];
+            
+            if (isCorrect) {
+                feedbackDiv.innerHTML = `
+                    <div class="feedback feedback-correct">
+                        <div class="feedback-title">✅ Excellent! That's absolutely correct!</div>
+                        <div class="feedback-insight"><strong>💡 Key Insight:</strong> ${insight}</div>
+                    </div>
+                `;
+            } else {
+                feedbackDiv.innerHTML = `
+                    <div class="feedback feedback-incorrect">
+                        <div class="feedback-title">❌ Not quite right, but great learning opportunity!</div>
+                        <div class="feedback-insight"><strong>💡 Key Insight:</strong> ${insight}</div>
+                    </div>
+                `;
+            }
+        }
+
+        function updateNavigationButtons() {
+            // Enable/disable next button based on current question answer
+            const nextBtn = document.getElementById('nextBtn');
+            const showResultsBtn = document.getElementById('showResultsBtn');
+            
+            if (answers[currentQuestion]) {
+                nextBtn.disabled = false;
+                if (currentQuestion === totalQuestions) {
+                    nextBtn.classList.add('hidden');
+                    showResultsBtn.classList.remove('hidden');
+                }
+            } else {
+                nextBtn.disabled = true;
+                showResultsBtn.classList.add('hidden');
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < totalQuestions && answers[currentQuestion]) {
+                // Hide current question
+                document.getElementById(`question${currentQuestion}`).classList.add('hidden');
+                
+                // Show next question
+                currentQuestion++;
+                document.getElementById(`question${currentQuestion}`).classList.remove('hidden');
+                
+                // Update navigation
+                updateNavigation();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 1) {
+                // Hide current question
+                document.getElementById(`question${currentQuestion}`).classList.add('hidden');
+                
+                // Show previous question
+                currentQuestion--;
+                document.getElementById(`question${currentQuestion}`).classList.remove('hidden');
+                
+                // Update navigation
+                updateNavigation();
+            }
+        }
+
+        function updateNavigation() {
+            // Update question status
+            document.getElementById('questionStatus').textContent = `Question ${currentQuestion} of ${totalQuestions}`;
+            
+            // Show/hide previous button
+            document.getElementById('prevBtn').classList.toggle('hidden', currentQuestion === 1);
+            
+            // Update next/results buttons
+            updateNavigationButtons();
+            
+            // Update progress bar
+            const progress = (currentQuestion / totalQuestions) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function showResults() {
+            const percentage = Math.round((score / totalQuestions) * 100);
+            let message = '';
+            let emoji = '';
+            
+            if (percentage >= 90) {
+                message = "Outstanding! You've mastered the Persona Pattern!";
+                emoji = "🌟";
+            } else if (percentage >= 70) {
+                message = "Great job! You have solid understanding of persona design!";
+                emoji = "👍";
+            } else if (percentage >= 50) {
+                message = "Good start! Keep learning about matching personas to user needs!";
+                emoji = "📚";
+            } else {
+                message = "Keep practicing! Focus on understanding user psychology and emotional needs!";
+                emoji = "💪";
+            }
+
+            document.getElementById('scoreDisplay').innerHTML = `
+                <div style="font-size: 2.5rem; margin-bottom: 15px;">${emoji}</div>
+                ${message}<br>
+                <strong>Final Score: ${score}/${totalQuestions} (${percentage}%)</strong>
+            `;
+
+            // Show detailed insights for each question
+            let insightsList = '';
+            for (let i = 1; i <= totalQuestions; i++) {
+                const answer = answers[i];
+                const status = answer?.isCorrect ? '✅' : '❌';
+                const cssClass = answer?.isCorrect ? 'insight-correct' : 'insight-incorrect';
+                
+                insightsList += `
+                    <div class="insight-box ${cssClass}">
+                        <strong>Question ${i} ${status}:</strong> ${insights[i]}
+                    </div>
+                `;
+            }
+            document.getElementById('finalInsights').innerHTML = insightsList;
+
+            // Hide all questions and show results
+            for (let i = 1; i <= totalQuestions; i++) {
+                document.getElementById(`question${i}`).classList.add('hidden');
+            }
+            document.getElementById('resultsPanel').style.display = 'block';
+            document.getElementById('showResultsBtn').classList.add('hidden');
+            document.getElementById('startExerciseBtn').classList.remove('hidden');
+            document.getElementById('questionStatus').textContent = 'Quiz Complete!';
+            
+            // Update progress to 100%
+            document.getElementById('progressFill').style.width = '100%';
+        }
+
+        function startExercise() {
+            document.getElementById('resultsPanel').style.display = 'none';
+            document.getElementById('exerciseSection').style.display = 'block';
+            document.getElementById('startExerciseBtn').classList.add('hidden');
+            document.getElementById('questionStatus').textContent = 'Hands-On Exercise';
+        }
+
+        function updateCharacterCount(textareaId, countId) {
+            const textarea = document.getElementById(textareaId);
+            const count = document.getElementById(countId);
+            const maxLength = 500;
+            const currentLength = textarea.value.length;
+            
+            count.textContent = `${currentLength}/${maxLength} characters`;
+            
+            // Change color based on length
+            if (currentLength > maxLength * 0.9) {
+                count.style.color = '#dc3545';
+            } else if (currentLength > maxLength * 0.7) {
+                count.style.color = '#fd7e14';
+            } else {
+                count.style.color = '#666';
+            }
+        }
+
+        function saveExercise() {
+            const peacekeeper = document.getElementById('peacekeeper').value.trim();
+            const problemSolver = document.getElementById('problemSolver').value.trim();
+            const strategy = document.getElementById('strategy').value.trim();
+            
+            if (peacekeeper && problemSolver && strategy) {
+                // Check minimum length for meaningful responses
+                if (peacekeeper.length < 50 || problemSolver.length < 50 || strategy.length < 30) {
+                    alert('📝 Please provide more detailed descriptions for each persona and strategy. Think about their specific characteristics, communication style, and approach.');
+                    return;
+                }
+                
+                alert('🎉 Excellent work! Your family mediation strategy demonstrates real understanding of how different personas can address the same conflict in completely different but effective ways. You\'ve successfully applied the Persona Pattern to a real-world scenario, showing how personality design impacts communication effectiveness!');
+            } else {
+                alert('📝 Please complete all three sections to save your family mediation strategy. Each section helps demonstrate your understanding of persona design principles.');
+            }
+        }
+
+        function clearExercise() {
+            if (confirm('Are you sure you want to clear all your work? This will delete everything you\'ve written.')) {
+                document.getElementById('peacekeeper').value = '';
+                document.getElementById('problemSolver').value = '';
+                document.getElementById('strategy').value = '';
+                
+                // Update character counts
+                updateCharacterCount('peacekeeper', 'peacekeeperCount');
+                updateCharacterCount('problemSolver', 'solverCount');
+                updateCharacterCount('strategy', 'strategyCount');
+            }
+        }
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set up character count listeners
+            document.getElementById('peacekeeper').addEventListener('input', function() {
+                updateCharacterCount('peacekeeper', 'peacekeeperCount');
+            });
+            
+            document.getElementById('problemSolver').addEventListener('input', function() {
+                updateCharacterCount('problemSolver', 'solverCount');
+            });
+            
+            document.getElementById('strategy').addEventListener('input', function() {
+                updateCharacterCount('strategy', 'strategyCount');
+            });
+            
+            // Initialize character counts
+            updateCharacterCount('peacekeeper', 'peacekeeperCount');
+            updateCharacterCount('problemSolver', 'solverCount');
+            updateCharacterCount('strategy', 'strategyCount');
+            
+            // Initialize progress bar
+            updateNavigation();
+        });
+    </script>
+</body>
+</html>
