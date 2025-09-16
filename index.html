@@ -243,6 +243,47 @@
             transform: translateX(5px);
         }
 
+        .option-label.correct-answer {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border-color: #28a745;
+            transform: translateX(5px);
+        }
+
+        .option-label.correct-answer::after {
+            content: '✓ CORRECT';
+            position: absolute;
+            right: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+
+        .option-label.wrong-selected {
+            background: linear-gradient(135deg, #dc3545 0%, #e83e8c 100%);
+            color: white;
+            border-color: #dc3545;
+            transform: translateX(5px);
+        }
+
+        .option-label.wrong-selected::after {
+            content: '✗ WRONG';
+            position: absolute;
+            right: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+
+        .option-label.disabled {
+            pointer-events: none;
+            opacity: 0.8;
+        }
+
         .option-input {
             margin-right: 12px;
             transform: scale(1.2);
@@ -293,6 +334,16 @@
 
         .feedback-insight {
             line-height: 1.6;
+            margin-top: 10px;
+        }
+
+        .correct-answer-highlight {
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 12px;
+            margin: 10px 0;
+            font-weight: 600;
         }
 
         .btn {
@@ -539,25 +590,25 @@
 
                     <ul class="options">
                         <li class="option-item">
-                            <label class="option-label" onclick="selectAnswer(1, 'a', true)">
+                            <label class="option-label" data-question="1" data-correct="true" onclick="selectAnswer(1, 'a', true, event)">
                                 <input type="radio" name="q1" value="a" class="option-input">
                                 <span class="option-text">A) Friend A - data and analysis approach</span>
                             </label>
                         </li>
                         <li class="option-item">
-                            <label class="option-label" onclick="selectAnswer(1, 'b', false)">
+                            <label class="option-label" data-question="1" data-correct="false" onclick="selectAnswer(1, 'b', false, event)">
                                 <input type="radio" name="q1" value="b" class="option-input">
                                 <span class="option-text">B) Friend B - emotional validation approach</span>
                             </label>
                         </li>
                         <li class="option-item">
-                            <label class="option-label" onclick="selectAnswer(1, 'c', false)">
+                            <label class="option-label" data-question="1" data-correct="false" onclick="selectAnswer(1, 'c', false, event)">
                                 <input type="radio" name="q1" value="c" class="option-input">
                                 <span class="option-text">C) Friend C - intuitive/spiritual approach</span>
                             </label>
                         </li>
                         <li class="option-item">
-                            <label class="option-label" onclick="selectAnswer(1, 'd', false)">
+                            <label class="option-label" data-question="1" data-correct="false" onclick="selectAnswer(1, 'd', false, event)">
                                 <input type="radio" name="q1" value="d" class="option-input">
                                 <span class="option-text">D) All approaches work equally well</span>
                             </label>
@@ -605,25 +656,25 @@
 
                     <ul class="options">
                         <li class="option-item">
-                            <label class="option-label" onclick="selectAnswer(2, 'a', false)">
+                            <label class="option-label" data-question="2" data-correct="false" onclick="selectAnswer(2, 'a', false, event)">
                                 <input type="radio" name="q2" value="a" class="option-input">
                                 <span class="option-text">A) Response A is more professional, Response B is more personal</span>
                             </label>
                         </li>
                         <li class="option-item">
-                            <label class="option-label" onclick="selectAnswer(2, 'b', false)">
+                            <label class="option-label" data-question="2" data-correct="false" onclick="selectAnswer(2, 'b', false, event)">
                                 <input type="radio" name="q2" value="b" class="option-input">
                                 <span class="option-text">B) Response A focuses on process, Response B focuses on emotions</span>
                             </label>
                         </li>
                         <li class="option-item">
-                            <label class="option-label" onclick="selectAnswer(2, 'c', false)">
+                            <label class="option-label" data-question="2" data-correct="false" onclick="selectAnswer(2, 'c', false, event)">
                                 <input type="radio" name="q2" value="c" class="option-input">
                                 <span class="option-text">C) Response A shows competence, Response B shows empathy</span>
                             </label>
                         </li>
                         <li class="option-item">
-                            <label class="option-label" onclick="selectAnswer(2, 'd', true)">
+                            <label class="option-label" data-question="2" data-correct="true" onclick="selectAnswer(2, 'd', true, event)">
                                 <input type="radio" name="q2" value="d" class="option-input">
                                 <span class="option-text">D) All of the above</span>
                             </label>
@@ -654,25 +705,25 @@
 
                     <ul class="options">
                         <li class="option-item">
-                            <label class="option-label" onclick="selectAnswer(3, 'a', false)">
+                            <label class="option-label" data-question="3" data-correct="false" onclick="selectAnswer(3, 'a', false, event)">
                                 <input type="radio" name="q3" value="a" class="option-input">
                                 <span class="option-text">A) It's too technical and uses jargon</span>
                             </label>
                         </li>
                         <li class="option-item">
-                            <label class="option-label" onclick="selectAnswer(3, 'b', false)">
+                            <label class="option-label" data-question="3" data-correct="false" onclick="selectAnswer(3, 'b', false, event)">
                                 <input type="radio" name="q3" value="b" class="option-input">
                                 <span class="option-text">B) It sounds robotic instead of human-friendly</span>
                             </label>
                         </li>
                         <li class="option-item">
-                            <label class="option-label" onclick="selectAnswer(3, 'c', false)">
+                            <label class="option-label" data-question="3" data-correct="false" onclick="selectAnswer(3, 'c', false, event)">
                                 <input type="radio" name="q3" value="c" class="option-input">
                                 <span class="option-text">C) It doesn't acknowledge the student's frustration</span>
                             </label>
                         </li>
                         <li class="option-item">
-                            <label class="option-label" onclick="selectAnswer(3, 'd', true)">
+                            <label class="option-label" data-question="3" data-correct="true" onclick="selectAnswer(3, 'd', true, event)">
                                 <input type="radio" name="q3" value="d" class="option-input">
                                 <span class="option-text">D) All of the above</span>
                             </label>
@@ -703,25 +754,25 @@
 
                     <ul class="options">
                         <li class="option-item">
-                            <label class="option-label" onclick="selectAnswer(4, 'a', false)">
+                            <label class="option-label" data-question="4" data-correct="false" onclick="selectAnswer(4, 'a', false, event)">
                                 <input type="radio" name="q4" value="a" class="option-input">
                                 <span class="option-text">A) Professional career counselor</span>
                             </label>
                         </li>
                         <li class="option-item">
-                            <label class="option-label" onclick="selectAnswer(4, 'b', true)">
+                            <label class="option-label" data-question="4" data-correct="true" onclick="selectAnswer(4, 'b', true, event)">
                                 <input type="radio" name="q4" value="b" class="option-input">
                                 <span class="option-text">B) Peer mentor who's been through the same struggle</span>
                             </label>
                         </li>
                         <li class="option-item">
-                            <label class="option-label" onclick="selectAnswer(4, 'c', false)">
+                            <label class="option-label" data-question="4" data-correct="false" onclick="selectAnswer(4, 'c', false, event)">
                                 <input type="radio" name="q4" value="c" class="option-input">
                                 <span class="option-text">C) Hiring manager giving insider tips</span>
                             </label>
                         </li>
                         <li class="option-item">
-                            <label class="option-label" onclick="selectAnswer(4, 'd', false)">
+                            <label class="option-label" data-question="4" data-correct="false" onclick="selectAnswer(4, 'd', false, event)">
                                 <input type="radio" name="q4" value="d" class="option-input">
                                 <span class="option-text">D) Academic professor teaching interview skills</span>
                             </label>
@@ -749,25 +800,25 @@
 
                     <ul class="options">
                         <li class="option-item">
-                            <label class="option-label" onclick="selectAnswer(5, 'a', false)">
+                            <label class="option-label" data-question="5" data-correct="false" onclick="selectAnswer(5, 'a', false, event)">
                                 <input type="radio" name="q5" value="a" class="option-input">
                                 <span class="option-text">A) Dr. Johnson, strict chemistry professor with 20 years of experience</span>
                             </label>
                         </li>
                         <li class="option-item">
-                            <label class="option-label" onclick="selectAnswer(5, 'b', false)">
+                            <label class="option-label" data-question="5" data-correct="false" onclick="selectAnswer(5, 'b', false, event)">
                                 <input type="radio" name="q5" value="b" class="option-input">
                                 <span class="option-text">B) ChemBot, AI with access to all chemistry knowledge</span>
                             </label>
                         </li>
                         <li class="option-item">
-                            <label class="option-label" onclick="selectAnswer(5, 'c', true)">
+                            <label class="option-label" data-question="5" data-correct="true" onclick="selectAnswer(5, 'c', true, event)">
                                 <input type="radio" name="q5" value="c" class="option-input">
                                 <span class="option-text">C) Maya, peer tutor who overcame chemistry anxiety herself</span>
                             </label>
                         </li>
                         <li class="option-item">
-                            <label class="option-label" onclick="selectAnswer(5, 'd', false)">
+                            <label class="option-label" data-question="5" data-correct="false" onclick="selectAnswer(5, 'd', false, event)">
                                 <input type="radio" name="q5" value="d" class="option-input">
                                 <span class="option-text">D) Professor Smith, Nobel Prize-winning chemist</span>
                             </label>
@@ -855,7 +906,15 @@
             5: "When users are in emotional crisis, they need personas that prioritize emotional support over expertise. Peer personas reduce shame and create immediate trust because they normalize struggle through shared experience. Authority can actually increase anxiety when someone is already overwhelmed."
         };
 
-        function selectAnswer(questionNum, answer, isCorrect) {
+        const correctAnswers = {
+            1: 'A) Friend A - data and analysis approach',
+            2: 'D) All of the above',
+            3: 'D) All of the above',
+            4: 'B) Peer mentor who\'s been through the same struggle',
+            5: 'C) Maya, peer tutor who overcame chemistry anxiety herself'
+        };
+
+        function selectAnswer(questionNum, answer, isCorrect, event) {
             // Prevent multiple selections for the same question
             if (answers[questionNum]) return;
             
@@ -863,14 +922,25 @@
             answers[questionNum] = { answer, isCorrect };
             if (isCorrect) score++;
 
-            // Update UI - mark selected option
+            // Get the question container
             const questionDiv = document.getElementById(`question${questionNum}`);
             const labels = questionDiv.querySelectorAll('.option-label');
+            
+            // Disable all options and show visual feedback
             labels.forEach(label => {
-                label.classList.remove('selected');
-                label.onclick = null; // Disable further clicking
+                label.classList.add('disabled');
+                label.onclick = null;
+                
+                // Highlight correct answer in green
+                if (label.dataset.correct === 'true') {
+                    label.classList.add('correct-answer');
+                }
+                
+                // Highlight wrong selection in red
+                if (label === event.currentTarget && !isCorrect) {
+                    label.classList.add('wrong-selected');
+                }
             });
-            event.currentTarget.classList.add('selected');
 
             // Show feedback immediately
             showFeedback(questionNum, isCorrect);
@@ -882,11 +952,15 @@
         function showFeedback(questionNum, isCorrect) {
             const feedbackDiv = document.getElementById(`feedback${questionNum}`);
             const insight = insights[questionNum];
+            const correctAnswer = correctAnswers[questionNum];
             
             if (isCorrect) {
                 feedbackDiv.innerHTML = `
                     <div class="feedback feedback-correct">
                         <div class="feedback-title">✅ Excellent! That's absolutely correct!</div>
+                        <div class="correct-answer-highlight">
+                            <strong>Correct Answer:</strong> ${correctAnswer}
+                        </div>
                         <div class="feedback-insight"><strong>💡 Key Insight:</strong> ${insight}</div>
                     </div>
                 `;
@@ -894,6 +968,9 @@
                 feedbackDiv.innerHTML = `
                     <div class="feedback feedback-incorrect">
                         <div class="feedback-title">❌ Not quite right, but great learning opportunity!</div>
+                        <div class="correct-answer-highlight">
+                            <strong>Correct Answer:</strong> ${correctAnswer}
+                        </div>
                         <div class="feedback-insight"><strong>💡 Key Insight:</strong> ${insight}</div>
                     </div>
                 `;
@@ -901,7 +978,6 @@
         }
 
         function updateNavigationButtons() {
-            // Enable/disable next button based on current question answer
             const nextBtn = document.getElementById('nextBtn');
             const showResultsBtn = document.getElementById('showResultsBtn');
             
@@ -919,43 +995,26 @@
 
         function nextQuestion() {
             if (currentQuestion < totalQuestions && answers[currentQuestion]) {
-                // Hide current question
                 document.getElementById(`question${currentQuestion}`).classList.add('hidden');
-                
-                // Show next question
                 currentQuestion++;
                 document.getElementById(`question${currentQuestion}`).classList.remove('hidden');
-                
-                // Update navigation
                 updateNavigation();
             }
         }
 
         function previousQuestion() {
             if (currentQuestion > 1) {
-                // Hide current question
                 document.getElementById(`question${currentQuestion}`).classList.add('hidden');
-                
-                // Show previous question
                 currentQuestion--;
                 document.getElementById(`question${currentQuestion}`).classList.remove('hidden');
-                
-                // Update navigation
                 updateNavigation();
             }
         }
 
         function updateNavigation() {
-            // Update question status
             document.getElementById('questionStatus').textContent = `Question ${currentQuestion} of ${totalQuestions}`;
-            
-            // Show/hide previous button
             document.getElementById('prevBtn').classList.toggle('hidden', currentQuestion === 1);
-            
-            // Update next/results buttons
             updateNavigationButtons();
-            
-            // Update progress bar
             const progress = (currentQuestion / totalQuestions) * 100;
             document.getElementById('progressFill').style.width = progress + '%';
         }
@@ -985,7 +1044,6 @@
                 <strong>Final Score: ${score}/${totalQuestions} (${percentage}%)</strong>
             `;
 
-            // Show detailed insights for each question
             let insightsList = '';
             for (let i = 1; i <= totalQuestions; i++) {
                 const answer = answers[i];
@@ -1000,7 +1058,6 @@
             }
             document.getElementById('finalInsights').innerHTML = insightsList;
 
-            // Hide all questions and show results
             for (let i = 1; i <= totalQuestions; i++) {
                 document.getElementById(`question${i}`).classList.add('hidden');
             }
@@ -1008,8 +1065,6 @@
             document.getElementById('showResultsBtn').classList.add('hidden');
             document.getElementById('startExerciseBtn').classList.remove('hidden');
             document.getElementById('questionStatus').textContent = 'Quiz Complete!';
-            
-            // Update progress to 100%
             document.getElementById('progressFill').style.width = '100%';
         }
 
@@ -1017,6 +1072,8 @@
             document.getElementById('resultsPanel').style.display = 'none';
             document.getElementById('exerciseSection').style.display = 'block';
             document.getElementById('startExerciseBtn').classList.add('hidden');
+            document.getElementById('prevBtn').classList.add('hidden');
+            document.getElementById('nextBtn').classList.add('hidden');
             document.getElementById('questionStatus').textContent = 'Hands-On Exercise';
         }
 
@@ -1028,7 +1085,6 @@
             
             count.textContent = `${currentLength}/${maxLength} characters`;
             
-            // Change color based on length
             if (currentLength > maxLength * 0.9) {
                 count.style.color = '#dc3545';
             } else if (currentLength > maxLength * 0.7) {
@@ -1044,7 +1100,6 @@
             const strategy = document.getElementById('strategy').value.trim();
             
             if (peacekeeper && problemSolver && strategy) {
-                // Check minimum length for meaningful responses
                 if (peacekeeper.length < 50 || problemSolver.length < 50 || strategy.length < 30) {
                     alert('📝 Please provide more detailed descriptions for each persona and strategy. Think about their specific characteristics, communication style, and approach.');
                     return;
@@ -1062,7 +1117,6 @@
                 document.getElementById('problemSolver').value = '';
                 document.getElementById('strategy').value = '';
                 
-                // Update character counts
                 updateCharacterCount('peacekeeper', 'peacekeeperCount');
                 updateCharacterCount('problemSolver', 'solverCount');
                 updateCharacterCount('strategy', 'strategyCount');
@@ -1071,7 +1125,6 @@
 
         // Initialize the application
         document.addEventListener('DOMContentLoaded', function() {
-            // Set up character count listeners
             document.getElementById('peacekeeper').addEventListener('input', function() {
                 updateCharacterCount('peacekeeper', 'peacekeeperCount');
             });
@@ -1084,12 +1137,10 @@
                 updateCharacterCount('strategy', 'strategyCount');
             });
             
-            // Initialize character counts
             updateCharacterCount('peacekeeper', 'peacekeeperCount');
             updateCharacterCount('problemSolver', 'solverCount');
             updateCharacterCount('strategy', 'strategyCount');
             
-            // Initialize progress bar
             updateNavigation();
         });
     </script>
